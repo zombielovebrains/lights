@@ -60,7 +60,7 @@ export default {
   methods: {
     countDownTimer() {
       console.log(this.timeoutCounter);
-      if(this.timeoutCounter > 0) {
+      if(this.timeoutCounter > 1) {
           setTimeout(() => {
             this.timeoutCounter -= 1
             this.countDownTimer()
@@ -71,10 +71,10 @@ export default {
   mounted() {
     const controller = new SwitchController()
     
-    let red = new Screen('red', 5)
+    let red = new Screen('red', 10)
     let yellowToGreen = new Screen('yellow', 3)
     let yellowToRed = new Screen('yellow', 3)    
-    let green = new Screen('green', 5)
+    let green = new Screen('green', 15)
 
     red.next = yellowToGreen
     yellowToGreen.next = green
@@ -84,7 +84,8 @@ export default {
     controller.trigger(red, 
     (screen) => {
       this.timeoutCounter = screen.timer
-      this.current = screen.id      
+      this.current = screen.id
+      setTimeout(this.countDownTimer, 0)      
     });
   }
 }
