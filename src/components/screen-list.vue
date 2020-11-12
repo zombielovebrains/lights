@@ -20,19 +20,22 @@ export default {
           color: '#E32636',
           paleColor: '#ffbfb7',
           timer: 10,
-          id: 'red'
+          id: 'red',
+          isActive: false
         },
         {
           color: '#ffc61b',
           paleColor: '#ffebbb',
           timer: 3,
-          id: 'yellow'
+          id: 'yellow',
+          isActive: false
         },
         {
           color: '#8db600',
           paleColor: '#dde6b5',
           timer: 15,
-          id: 'green'
+          id: 'green',
+          isActive: true
         }                  
       ]
     }
