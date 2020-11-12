@@ -1,6 +1,6 @@
 <template>
   <li class="screen-list__item">
-    <div class="screen-list__light" :style='{backgroundColor: currentColor}' v-if="changeColorIsActive()" >
+    <div class="screen-list__light" :class="{active: current=='red'}">
       <span class="screen-list__timer" v-if="currentActive">{{currentTimer}}</span>
     </div>
   </li>
@@ -14,13 +14,18 @@ export default {
     paleColor: String,
     timer: Number,
     id: String,
-    isActive: Boolean
+    isActive: Boolean,
+    timeout: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
       currentColor: this.color,
       currentActive: this.isActive,
-      currentTimer: this.timer
+      currentTimer: this.timer,
+      isTimeouted: this.timeout
     }    
   },
   mounted() {
@@ -39,16 +44,21 @@ export default {
             }, 1000)
         } else {
           this.currentActive = false
-          this.changeColor()
+          this.isTimeouted = true
+          this.changeColorIsActive()
         }        
       }
+    },
+    changeScreen() {
+      this.changeColor();
+      this.countDownTimer();
     }
   },
-  watch: {
-    currentActive() {
-      this.countDownTimer()
-    }
-  }
+  // watch: {
+  //   currentActive() {
+  //     this.countDownTimer()
+  //   }
+  // }
 }
 </script>
 
