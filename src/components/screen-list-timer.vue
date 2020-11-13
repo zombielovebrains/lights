@@ -13,9 +13,14 @@ export default {
 </script>
 
 <style lang="sass">
-  .screen-list__timer {
-    font-size: 40px;
-    margin: auto;
-    color: #fff;
-  }
+  .screen-list__timer 
+    font-size: 40px
+    margin: auto
+    color: #000
+    width: 60px
+    height: 60px
+    display: flex
+    justify-content: center
+    align-items: center
+  
 </style>

@@ -15,9 +15,9 @@ export default {
 }
 </script>
 
-<style>
-  #app {
-    display: flex;
-    align-items: center;
-  }
+<style lang='sass'>
+  #app 
+    display: flex
+    align-items: center
+  
 </style>
