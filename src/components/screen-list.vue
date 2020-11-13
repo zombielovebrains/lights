@@ -1,17 +1,17 @@
 <template>
   <ul class="screen-list">
     <li class="screen-list__item">
-      <div class="screen-list_light screen-list_light--red" :class="{active: current=='red', flicked: flicked}" >
+      <div class="screen-list_light screen-list_light--red" :class="{active: current=='red', flicker: flicked && current=='red'}" >
         <span class="screen-list__timer" v-if="current=='red'">{{timeoutCounter}}</span>
       </div>
     </li>
     <li class="screen-list__item">
-      <div class="screen-list_light screen-list_light--yellow" :class="{active: current=='yellow', flicked: flicked}">
+      <div class="screen-list_light screen-list_light--yellow" :class="{active: current=='yellow', flicker: flicked && current=='yellow'}">
         <span class="screen-list__timer" v-if="current=='yellow'">{{timeoutCounter}}</span>
       </div>
     </li>
     <li class="screen-list__item">
-      <div class="screen-list_light screen-list_light--green" :class="{active: current=='green', flicked: flicked}">
+      <div class="screen-list_light screen-list_light--green" :class="{active: current=='green', flicker: flicked && current=='green'}">
         <span class="screen-list__timer" v-if="current=='green'">{{timeoutCounter}}</span>
       </div>
     </li>        
@@ -54,14 +54,6 @@ export default {
           this.countDownTimer()
         }, 1000)
       }             
-    },
-
-    flicker() {
-      for (var i = 0; i < 3; i++) {
-        setTimeout(() => {
-          this.flicked = !this.flicked
-        }, 400 * i);
-      }
     }
   },
   mounted() {
@@ -90,7 +82,7 @@ export default {
   watch: {
     timeoutCounter() {
       if (this.timeoutCounter < 3) {
-        this.flicker()
+        this.flicked = true
       }
     }
   }
@@ -148,6 +140,17 @@ export default {
   
   .flicked
     opacity: 0.3
+
+  @keyframes start_blink 
+    from 
+      opacity: 1;
+    
+    to 
+      opacity: 0.2;
+    
+  .flicker
+    animation: start_blink 0.4s linear infinite alternate
+  
 </style>
 
 
