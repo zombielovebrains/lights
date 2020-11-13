@@ -1,32 +1,20 @@
 <template>
   <ul class="screen-list">
     <li class="screen-list__item">
-      <div class="screen-list_light screen-list_light--red" :class="{active: current=='red'}">
+      <div class="screen-list_light screen-list_light--red" :class="{active: current=='red', flicked: flicked}" >
         <span class="screen-list__timer" v-if="current=='red'">{{timeoutCounter}}</span>
       </div>
     </li>
     <li class="screen-list__item">
-      <div class="screen-list_light screen-list_light--yellow" :class="{active: current=='yellow'}">
+      <div class="screen-list_light screen-list_light--yellow" :class="{active: current=='yellow', flicked: flicked}">
         <span class="screen-list__timer" v-if="current=='yellow'">{{timeoutCounter}}</span>
       </div>
     </li>
     <li class="screen-list__item">
-      <div class="screen-list_light screen-list_light--green" :class="{active: current=='green'}">
+      <div class="screen-list_light screen-list_light--green" :class="{active: current=='green', flicked: flicked}">
         <span class="screen-list__timer" v-if="current=='green'">{{timeoutCounter}}</span>
       </div>
     </li>        
-    <!-- <li 
-    class="screen-list__item" 
-    v-for='index in screens' 
-    :key='index'>
-    <div class="screen-list__light">
-      <span class="screen-list__timer" v-if="currentActive">{{currentTimer}}</span>
-    </div>
-  </li>    
-    <screenListItem 
-    v-for='(screen, index) in screens'
-    :key='index'
-    v-bind='screen'/> -->
   </ul>
 </template>
 
@@ -54,17 +42,25 @@ export default {
   data() {
     return {
       current: 'red',
-      timeoutCounter: Number
+      timeoutCounter: Number,
+      flicked: false
     }
   },
   methods: {
     countDownTimer() {
-      console.log(this.timeoutCounter);
       if(this.timeoutCounter > 1) {
-          setTimeout(() => {
-            this.timeoutCounter -= 1
-            this.countDownTimer()
-          }, 1000)
+        setTimeout(() => {
+          this.timeoutCounter -= 1
+          this.countDownTimer()
+        }, 1000)
+      }             
+    },
+
+    flicker() {
+      for (var i = 0; i < 3; i++) {
+        setTimeout(() => {
+          this.flicked = !this.flicked
+        }, 400 * i);
       }
     }
   },
@@ -85,8 +81,18 @@ export default {
     (screen) => {
       this.timeoutCounter = screen.timer
       this.current = screen.id
+      this.flicked = false
       setTimeout(this.countDownTimer, 0)      
     });
+
+ 
+  },
+  watch: {
+    timeoutCounter() {
+      if (this.timeoutCounter < 3) {
+        this.flicker()
+      }
+    }
   }
 }
 </script>
@@ -140,6 +146,8 @@ export default {
     margin: auto
     color: #000
   
+  .flicked
+    opacity: 0.3
 </style>
 
 
