@@ -1,6 +1,7 @@
 <template>
   <ul class="screen-list">
-    <li class="screen-list__item">
+    
+    <!-- <li class="screen-list__item">
       <div class="screen-list_light screen-list_light--red" :class="{active: current=='red', flicker: flicked && current=='red'}" >
         <span class="screen-list__timer" v-if="current=='red'">{{timeoutCounter}}</span>
       </div>
@@ -14,7 +15,7 @@
       <div class="screen-list_light screen-list_light--green" :class="{active: current=='green', flicker: flicked && current=='green'}">
         <span class="screen-list__timer" v-if="current=='green'">{{timeoutCounter}}</span>
       </div>
-    </li>        
+    </li>         -->
   </ul>
 </template>
 
