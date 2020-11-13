@@ -1,5 +1,5 @@
 <template>
-  <ul class="screen-list">
+  <ul class='screen-list'>
     <screen-list-item 
       :id='"red"'
       :counter='counterProp'
@@ -94,7 +94,7 @@
   }
 </script>
 
-<style lang="sass">
+<style lang='sass'>
   .screen-list 
     margin: auto
     padding: 0

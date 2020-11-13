@@ -1,5 +1,5 @@
 <template>
-  <span class="screen-list__timer" v-if="isActive">{{counter}}</span>
+  <span class='screen-list__timer' v-if="isActive">{{counter}}</span>
 </template>
 
 <script>
@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang='sass'>
   .screen-list__timer 
     font-size: 40px
     margin: auto

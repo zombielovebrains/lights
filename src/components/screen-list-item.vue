@@ -1,6 +1,6 @@
 <template>
-  <li class="screen-list__item">
-    <div class="screen-list__light" :class="{active: isCurrent, flickering: flicked && isCurrent}" :id='id'>
+  <li class='screen-list__item'>
+    <div class='screen-list__light' :class="{active: isCurrent, flickering: flicked && isCurrent}" :id='id'>
       <screenListTimer :counter='counter' :isActive='isCurrent' />
     </div>
   </li>
@@ -28,7 +28,7 @@
   }
 </script>
 
-<style lang="sass">
+<style lang='sass'>
   .screen-list__item 
     background-color: #f4f9fc;
     display: flex
