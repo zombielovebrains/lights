@@ -59,6 +59,12 @@
             this.countDownTimer()
           }, 1000)
         }             
+      },
+
+      checkFlickerTrigger(currentTime) {
+        if (currentTime < 3) {
+          this.flicked = true
+        }
       }
     },
     mounted() {
@@ -84,10 +90,8 @@
 
     },
     watch: {
-      timeoutCounter() {
-        if (this.timeoutCounter < 3) {
-          this.flicked = true
-        }
+      timeoutCounter(timeoutCounter) {
+        this.checkFlickerTrigger(timeoutCounter)
       }
     }
   }

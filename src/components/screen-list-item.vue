@@ -1,7 +1,7 @@
 <template>
   <li class='screen-list__item'>
     <div class='screen-list__light' :class="[getFullClassName, {active: isCurrent, flickering: flicked && isCurrent}]">
-      <screenListTimer :counter='counter' :isActive='isCurrent' />
+      <screen-list-timer :counter='counter' :isActive='isCurrent' />
     </div>
   </li>
 </template>
