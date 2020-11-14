@@ -15,18 +15,18 @@
       screenListTimer
     },
     props: {
-      id: String,
+      color: String,
       counter: Number,
       current: String,
       flicked: Boolean
     },
     computed: {
       isCurrent() {
-        return this.current==this.id
+        return this.current==this.color
       },
       
       getFullClassName() {
-        return `screen-list__light--${this.id}`
+        return `screen-list__light--${this.color}`
       }
     }
   }

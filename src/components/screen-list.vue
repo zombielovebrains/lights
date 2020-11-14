@@ -1,17 +1,17 @@
 <template>
   <ul class='screen-list'>
     <screen-list-item 
-      :id='"red"'
+      :color='"red"'
       :counter='timeoutCounter'
       :flicked='flicked'
       :current='current'/>
     <screen-list-item 
-      :id='"yellow"'
+      :color='"yellow"'
       :counter='timeoutCounter'
       :flicked='flicked'
       :current='current'/>
     <screen-list-item 
-      :id='"green"'
+      :color='"green"'
       :counter='timeoutCounter'
       :flicked='flicked'
       :current='current'/>            
@@ -23,8 +23,8 @@
   import screenListItem from './screen-list-item'
 
   class Screen {
-    constructor(id, timer, next) {
-      this.id = id
+    constructor(name, timer, next) {
+      this.name = name
       this.timer = timer
       this.next = next
     }
@@ -83,7 +83,7 @@
       controller.trigger(red, 
         (screen) => {
           this.timeoutCounter = screen.timer
-          this.current = screen.id
+          this.current = screen.name
           this.flicked = false
           setTimeout(this.countDownTimer, 0)      
       })
