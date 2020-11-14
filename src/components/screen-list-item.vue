@@ -1,6 +1,6 @@
 <template>
   <li class='screen-list__item'>
-    <div class='screen-list__light' :class="{active: isCurrent, flickering: flicked && isCurrent}" :id='id'>
+    <div class='screen-list__light' :class="[getFullClassName, {active: isCurrent, flickering: flicked && isCurrent}]">
       <screenListTimer :counter='counter' :isActive='isCurrent' />
     </div>
   </li>
@@ -23,7 +23,11 @@
     computed: {
       isCurrent() {
         return this.current==this.id
-      }        
+      },
+      
+      getFullClassName() {
+        return `screen-list__light--${this.id}`
+      }
     }
   }
 </script>
@@ -45,17 +49,17 @@
     height: 80%
     display: flex
     opacity: 0.3
-  
-  #red 
-    background-color: red
-  
 
-  #yellow 
-    background-color: yellow
-  
+    &--red 
+      background-color: red
+    
 
-  #green
-    background-color: green  
+    &--yellow 
+      background-color: yellow
+    
+
+    &--green
+      background-color: green  
   
   .active 
     opacity: 1

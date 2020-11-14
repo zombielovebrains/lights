@@ -2,17 +2,17 @@
   <ul class='screen-list'>
     <screen-list-item 
       :id='"red"'
-      :counter='counterProp'
+      :counter='timeoutCounter'
       :flicked='flicked'
       :current='current'/>
     <screen-list-item 
       :id='"yellow"'
-      :counter='counterProp'
+      :counter='timeoutCounter'
       :flicked='flicked'
       :current='current'/>
     <screen-list-item 
       :id='"green"'
-      :counter='counterProp'
+      :counter='timeoutCounter'
       :flicked='flicked'
       :current='current'/>            
   </ul>
@@ -47,9 +47,8 @@
     data() {
       return {
         current: 'red',
-        timeoutCounter: Number,
-        flicked: false,
-        counterProp: Number                
+        timeoutCounter: 10,
+        flicked: false           
       }
     },
     methods: {
@@ -76,16 +75,16 @@
       yellowToRed.next = red
 
       controller.trigger(red, 
-      (screen) => {
-        this.timeoutCounter = screen.timer
-        this.current = screen.id
-        this.flicked = false
-        setTimeout(this.countDownTimer, 0)      
-      });
+        (screen) => {
+          this.timeoutCounter = screen.timer
+          this.current = screen.id
+          this.flicked = false
+          setTimeout(this.countDownTimer, 0)      
+      })
+
     },
     watch: {
       timeoutCounter() {
-        this.counterProp = this.timeoutCounter 
         if (this.timeoutCounter < 3) {
           this.flicked = true
         }
