@@ -11,7 +11,7 @@
       :counter='counter'
       :flicked='flicked'/>
     <screen-list-item
-      :path="'/green' "
+      :path='"/green"'
       :color='"green"'
       :counter='counter'
       :flicked='flicked'
@@ -23,7 +23,7 @@
 <script>
   import screenListItem from './screen-list-item'
 
-  class Screen {
+  class ScreenState {
     constructor(path, timer, next) {
       this.timer = timer
       this.path = path
@@ -41,10 +41,42 @@
         counter: 10,
         flicked: false,
         nextScreenPath: '',
-        isSaved: false
+        rightPath: false
       }
     },
     methods: {
+      getScreenStates() {        
+        let red = new ScreenState('/red', 10)
+        let yellowToGreen = new ScreenState('/yellow', 3)
+        let yellowToRed = new ScreenState('/yellow', 3)    
+        let green = new ScreenState('/green', 15)
+
+        red.next = yellowToGreen
+        yellowToGreen.next = green
+        green.next = yellowToRed
+        yellowToRed.next = red
+
+        return {red, yellowToGreen, yellowToRed, green}
+      },
+
+      getBeginScreen({red, yellowToGreen, yellowToRed, green}) {
+        switch (this.$route.path) {
+          case '/green':
+            return green
+            
+          case '/yellow' :
+            if (this.nextScreenPath == '/red' || this.nextScreenPath == '') {
+              return yellowToRed
+            } else if(this.nextScreenPath == '/green') {
+              return yellowToGreen
+            }          
+            break
+
+          default:
+            return red
+        }
+      }
+      ,
       countDownTimer() {
         if(this.counter > 1) {
           setTimeout(() => {
@@ -72,62 +104,22 @@
         if (localStorage.getItem('nextPath') != null && JSON.parse(localStorage.getItem('path')) == this.$route.path) {
           this.nextScreenPath = JSON.parse(localStorage.getItem('nextPath'))
           this.counter = JSON.parse(localStorage.getItem('counter'))
-          this.isSaved = true
+          this.rightPath = true
         }
       },
 
-      // checkNextPath() {
-      //   if (localStorage.getItem('nextPath') != null) {
-      //     this.nextScreenPath = JSON.parse(localStorage.getItem('nextPath'))
-      //   }
-      // },
-
-      // checkCounter() {
-      //   if (localStorage.getItem('counter') != null) {
-      //     this.counter = JSON.parse(localStorage.getItem('counter'))
-      //   }
-      // }
+      ifNeedToOverrideCounter(beginScreen) {
+        if(!this.rightPath) {
+          this.counter = beginScreen.timer
+        }
+      }
     },
-    created() {
-      let beginScreen 
-      let red = new Screen('/red', 10)
-      let yellowToGreen = new Screen('/yellow', 3)
-      let yellowToRed = new Screen('/yellow', 3)    
-      let green = new Screen('/green', 15)
-
-      red.next = yellowToGreen
-      yellowToGreen.next = green
-      green.next = yellowToRed
-      yellowToRed.next = red
-
-      console.log(JSON.parse(localStorage.getItem('path')) == this.$route.path)
-      console.log(this.$route.path)
-
+    created() {    
+      let screens = this.getScreenStates()  
       this.checkLocalStorage()
-      
-      switch (this.$route.path) {
-        case '/green':
-          beginScreen = green
-          break;
-          
-        case '/yellow' :
-          console.log(this.nextScreenPath)
-          if (this.nextScreenPath == '/red' || this.nextScreenPath == '') {
-            beginScreen = yellowToRed
-          } else if(this.nextScreenPath == '/green') {
-            beginScreen = yellowToGreen
-          }          
-          break;
-        
-        default:
-          beginScreen = red
-          break;
-      }
-
-      if(!this.isSaved) {
-        this.counter = beginScreen.timer
-      }
-      
+      let beginScreen = this.getBeginScreen(screens)
+      this.ifNeedToOverrideCounter(beginScreen)
+     
       this.trigger(beginScreen, (screen) => {       
         this.flicked = false
         this.$router.push({ path: screen.path })

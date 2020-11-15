@@ -42,25 +42,25 @@
     width: 200px
     height: 200px
     margin-bottom: 20px
-    border-radius: 20%   
+    border-radius: 15%   
 
   .screen-list__light
-    border-radius: 20%
+    border-radius: 10%
     width: 80%
     height: 80%
     display: flex
     opacity: 0.3
 
     &--red 
-      background-color: red
+      background-color: #F9462B
     
 
     &--yellow 
-      background-color: yellow
+      background-color: #FFCE46
     
 
     &--green
-      background-color: green  
+      background-color: #03CE78  
   
   .active 
     opacity: 1

@@ -13,12 +13,13 @@ export default {
 </script>
 
 <style lang='sass'>
-  .screen-list__timer 
-    font-size: 40px
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap')
+
+  .screen-list__timer
+    font-family: 'Orbitron', sans-serif;
+    font-size: 45px
     margin: auto
     color: #000
-    width: 60px
-    height: 60px
     display: flex
     justify-content: center
     align-items: center
