@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import screenList from './components/screen-list'
+import screenList from './components/screen-list.vue'
 
 export default {
   name: 'App',

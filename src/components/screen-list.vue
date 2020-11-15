@@ -21,7 +21,7 @@
 
 
 <script>
-  import screenListItem from './screen-list-item'
+  import screenListItem from './screen-list-item.vue'
 
   class ScreenState {
     constructor(path, timer, next) {

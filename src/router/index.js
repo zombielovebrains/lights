@@ -1,5 +1,5 @@
 import VueRouter from 'vue-router'
-import screenListItem from '../components/screen-list-item'
+import screenListItem from '../components/screen-list-item.vue'
 
 const originalPush = VueRouter.prototype.push
 
@@ -12,6 +12,9 @@ VueRouter.prototype.push = function push(location) {
 export default new VueRouter({
   mode: 'history',
   routes: [
+    {
+      path: '/', redirect: '/red'
+    },
     {
       path: '/red',
       component: screenListItem

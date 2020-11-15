@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import screenListTimer from './screen-list-timer'
+  import screenListTimer from './screen-list-timer.vue'
 
   export default {
     name: 'screenListItem',
@@ -35,7 +35,7 @@
 
 <style lang='sass'>
   .screen-list__item 
-    background-color: #f4f9fc;
+    background-color: #f4f9fc
     display: flex
     justify-content: center
     align-items: center
@@ -67,10 +67,10 @@
 
   @keyframes blink 
     from 
-      opacity: 1;
+      opacity: 1
     
     to 
-      opacity: 0.2;
+      opacity: 0.2
   
   .flickering
     animation: blink 0.4s linear infinite alternate  

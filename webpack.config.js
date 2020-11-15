@@ -1,5 +1,6 @@
 const path = require('path');
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -7,7 +8,15 @@ module.exports = {
   output: {
     filename: 'build.js',
     path: path.resolve(__dirname, '/dist'),
-    publicPath: '/dist/',
+    publicPath: process.env.NODE_ENV === 'production'
+    ? '/red/'
+    : '/'
+  },
+  devServer: {
+    historyApiFallback: true,
+    contentBase: path.join(__dirname, 'dist'),
+    port: 3000,
+    open: true
   },
 
   module: {
@@ -49,7 +58,9 @@ module.exports = {
   },
 
   plugins: [
-    // убедитесь что подключили плагин!
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
+      template: "./public/index.html"
+    })
   ]
 };

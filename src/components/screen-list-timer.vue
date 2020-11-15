@@ -16,7 +16,7 @@ export default {
   @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap')
 
   .screen-list__timer
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Orbitron', sans-serif
     font-size: 45px
     margin: auto
     color: #000
