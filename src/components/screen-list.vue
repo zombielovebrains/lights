@@ -40,7 +40,8 @@
       return {
         counter: 10,
         flicked: false,
-        nextScreenPath: ''    
+        nextScreenPath: '',
+        isSaved: false
       }
     },
     methods: {
@@ -62,15 +63,30 @@
       trigger(screen, callback) {
         callback(screen)
         setTimeout(()=>{
+          this.counter = screen.next.timer
           this.trigger(screen.next, callback)
         }, this.counter * 1000)
       },
-
-      checkNextPath() {
-        if (localStorage.getItem('nextPath') != null) {
+      
+      checkLocalStorage() {
+        if (localStorage.getItem('nextPath') != null && JSON.parse(localStorage.getItem('path')) == this.$route.path) {
           this.nextScreenPath = JSON.parse(localStorage.getItem('nextPath'))
+          this.counter = JSON.parse(localStorage.getItem('counter'))
+          this.isSaved = true
         }
-      }
+      },
+
+      // checkNextPath() {
+      //   if (localStorage.getItem('nextPath') != null) {
+      //     this.nextScreenPath = JSON.parse(localStorage.getItem('nextPath'))
+      //   }
+      // },
+
+      // checkCounter() {
+      //   if (localStorage.getItem('counter') != null) {
+      //     this.counter = JSON.parse(localStorage.getItem('counter'))
+      //   }
+      // }
     },
     created() {
       let beginScreen 
@@ -84,7 +100,10 @@
       green.next = yellowToRed
       yellowToRed.next = red
 
-      this.checkNextPath()
+      console.log(JSON.parse(localStorage.getItem('path')) == this.$route.path)
+      console.log(this.$route.path)
+
+      this.checkLocalStorage()
       
       switch (this.$route.path) {
         case '/green':
@@ -92,7 +111,8 @@
           break;
           
         case '/yellow' :
-          if (this.nextScreenPath == '/red') {
+          console.log(this.nextScreenPath)
+          if (this.nextScreenPath == '/red' || this.nextScreenPath == '') {
             beginScreen = yellowToRed
           } else if(this.nextScreenPath == '/green') {
             beginScreen = yellowToGreen
@@ -104,18 +124,22 @@
           break;
       }
 
+      if(!this.isSaved) {
+        this.counter = beginScreen.timer
+      }
+      
       this.trigger(beginScreen, (screen) => {       
-        this.counter = screen.timer 
         this.flicked = false
         this.$router.push({ path: screen.path })
         localStorage.setItem('nextPath', JSON.stringify(screen.next.path))
+        localStorage.setItem('path', JSON.stringify(screen.path))
         setTimeout(this.countDownTimer, 0)
       })
     }
     ,
     watch: {
       counter(counter) {    
-        localStorage.setItem('timer', JSON.stringify(counter))   
+        localStorage.setItem('counter', JSON.stringify(counter))   
         this.checkFlickerTrigger(counter)
       }
     }
