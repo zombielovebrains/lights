@@ -3,17 +3,17 @@
     <screen-list-item 
       :path='"/red"'
       :color='"red"'
-      :counter='timeoutCounter'
+      :counter='counter'
       :flicked='flicked'/>
     <screen-list-item
       :path='"/yellow" '
       :color='"yellow"'
-      :counter='timeoutCounter'
+      :counter='counter'
       :flicked='flicked'/>
     <screen-list-item
       :path="'/green' "
       :color='"green"'
-      :counter='timeoutCounter'
+      :counter='counter'
       :flicked='flicked'
 />            
   </ul>
@@ -38,19 +38,19 @@
     },
     data() {
       return {
-        timeoutCounter: 10,
+        counter: 10,
         flicked: false,
-        lastBoundaryScreenPath: '/red'     
+        nextScreenPath: ''    
       }
     },
     methods: {
       countDownTimer() {
-        if(this.timeoutCounter > 1) {
+        if(this.counter > 1) {
           setTimeout(() => {
-            this.timeoutCounter -= 1
+            this.counter -= 1
             this.countDownTimer()
           }, 1000)
-        }             
+        }         
       },
 
       checkFlickerTrigger(currentTime) {
@@ -63,9 +63,14 @@
         callback(screen)
         setTimeout(()=>{
           this.trigger(screen.next, callback)
-        }, this.timeoutCounter * 1000)
-      }
+        }, this.counter * 1000)
+      },
 
+      checkNextPath() {
+        if (localStorage.getItem('nextPath') != null) {
+          this.nextScreenPath = JSON.parse(localStorage.getItem('nextPath'))
+        }
+      }
     },
     created() {
       let beginScreen 
@@ -78,6 +83,8 @@
       yellowToGreen.next = green
       green.next = yellowToRed
       yellowToRed.next = red
+
+      this.checkNextPath()
       
       switch (this.$route.path) {
         case '/green':
@@ -85,12 +92,11 @@
           break;
           
         case '/yellow' :
-          beginScreen = yellowToRed
-          // if (this.lastBoundaryScreenPath == '/green') {
-          //   beginScreen = yellowToRed
-          // } else if(this.lastBoundaryScreenPath == '/red') {
-          //   beginScreen = yellowToGreen
-          // }          
+          if (this.nextScreenPath == '/red') {
+            beginScreen = yellowToRed
+          } else if(this.nextScreenPath == '/green') {
+            beginScreen = yellowToGreen
+          }          
           break;
         
         default:
@@ -98,17 +104,19 @@
           break;
       }
 
-      this.trigger(beginScreen, (screen) => {        
-        this.timeoutCounter = screen.timer
+      this.trigger(beginScreen, (screen) => {       
+        this.counter = screen.timer 
         this.flicked = false
         this.$router.push({ path: screen.path })
+        localStorage.setItem('nextPath', JSON.stringify(screen.next.path))
         setTimeout(this.countDownTimer, 0)
       })
     }
     ,
     watch: {
-      timeoutCounter(timeoutCounter) {
-        this.checkFlickerTrigger(timeoutCounter)
+      counter(counter) {    
+        localStorage.setItem('timer', JSON.stringify(counter))   
+        this.checkFlickerTrigger(counter)
       }
     }
     
