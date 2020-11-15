@@ -1,7 +1,7 @@
 <template>
   <li class='screen-list__item'>
-    <div class='screen-list__light' :class="[getFullClassName, {active: isCurrent, flickering: flicked && isCurrent}]">
-      <screen-list-timer :counter='counter' :isActive='isCurrent' />
+    <div class='screen-list__light' :class="[getFullClassName, {active: isActive, flickering: flicked && isActive}]">
+      <screen-list-timer :counter='counter' :isActive='isActive' />
     </div>
   </li>
 </template>
@@ -15,14 +15,15 @@
       screenListTimer
     },
     props: {
+      flicked: Boolean,
       color: String,
-      counter: Number,
-      current: String,
-      flicked: Boolean
+      path: String,
+      counter: Number
+      
     },
     computed: {
-      isCurrent() {
-        return this.current==this.color
+      isActive() {
+        return this.$route.path === this.path
       },
       
       getFullClassName() {

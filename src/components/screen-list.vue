@@ -1,20 +1,21 @@
 <template>
   <ul class='screen-list'>
     <screen-list-item 
+      :path='"/red"'
       :color='"red"'
       :counter='timeoutCounter'
-      :flicked='flicked'
-      :current='current'/>
-    <screen-list-item 
+      :flicked='flicked'/>
+    <screen-list-item
+      :path='"/yellow" '
       :color='"yellow"'
       :counter='timeoutCounter'
-      :flicked='flicked'
-      :current='current'/>
-    <screen-list-item 
+      :flicked='flicked'/>
+    <screen-list-item
+      :path="'/green' "
       :color='"green"'
       :counter='timeoutCounter'
       :flicked='flicked'
-      :current='current'/>            
+/>            
   </ul>
 </template>
 
@@ -23,19 +24,10 @@
   import screenListItem from './screen-list-item'
 
   class Screen {
-    constructor(name, timer, next) {
-      this.name = name
+    constructor(path, timer, next) {
       this.timer = timer
-      this.next = next
-    }
-  }
-
-  class SwitchController { 
-    trigger(screen, callback) {
-      callback(screen)
-      setTimeout(()=>{
-        this.trigger(screen.next, callback)
-      }, screen.timer * 1000)
+      this.path = path
+      this.next = next      
     }
   }
 
@@ -46,9 +38,9 @@
     },
     data() {
       return {
-        current: 'red',
         timeoutCounter: 10,
-        flicked: false           
+        flicked: false,
+        lastBoundaryScreenPath: '/red'     
       }
     },
     methods: {
@@ -65,35 +57,61 @@
         if (currentTime < 3) {
           this.flicked = true
         }
+      },
+
+      trigger(screen, callback) {
+        callback(screen)
+        setTimeout(()=>{
+          this.trigger(screen.next, callback)
+        }, this.timeoutCounter * 1000)
       }
+
     },
-    mounted() {
-      const controller = new SwitchController()
-      
-      let red = new Screen('red', 10)
-      let yellowToGreen = new Screen('yellow', 3)
-      let yellowToRed = new Screen('yellow', 3)    
-      let green = new Screen('green', 15)
+    created() {
+      let beginScreen 
+      let red = new Screen('/red', 10)
+      let yellowToGreen = new Screen('/yellow', 3)
+      let yellowToRed = new Screen('/yellow', 3)    
+      let green = new Screen('/green', 15)
 
       red.next = yellowToGreen
       yellowToGreen.next = green
       green.next = yellowToRed
       yellowToRed.next = red
+      
+      switch (this.$route.path) {
+        case '/green':
+          beginScreen = green
+          break;
+          
+        case '/yellow' :
+          beginScreen = yellowToRed
+          // if (this.lastBoundaryScreenPath == '/green') {
+          //   beginScreen = yellowToRed
+          // } else if(this.lastBoundaryScreenPath == '/red') {
+          //   beginScreen = yellowToGreen
+          // }          
+          break;
+        
+        default:
+          beginScreen = red
+          break;
+      }
 
-      controller.trigger(red, 
-        (screen) => {
-          this.timeoutCounter = screen.timer
-          this.current = screen.name
-          this.flicked = false
-          setTimeout(this.countDownTimer, 0)      
+      this.trigger(beginScreen, (screen) => {        
+        this.timeoutCounter = screen.timer
+        this.flicked = false
+        this.$router.push({ path: screen.path })
+        setTimeout(this.countDownTimer, 0)
       })
-
-    },
+    }
+    ,
     watch: {
       timeoutCounter(timeoutCounter) {
         this.checkFlickerTrigger(timeoutCounter)
       }
     }
+    
   }
 </script>
 
@@ -103,7 +121,6 @@
     padding: 0
     display: flex
     flex-direction: column
-    justify-content: space-between
     list-style-type: none  
 </style>
 
